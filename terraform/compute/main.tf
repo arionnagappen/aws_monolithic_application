@@ -1,0 +1,104 @@
+// ---BASTION HOST
+resource "aws_instance" "bastion_host" {
+  ami = "ami-0914bddde8faa93a0"
+  instance_type = "t3.micro"
+  subnet_id = element(var.public_subnet_ids, 0)
+  key_name = aws_key_pair.bastion_key.key_name
+
+
+  tags = {
+    Name = "Bastion Host"
+  }
+}
+
+// ---BASTION HOST KEY-PAIR
+resource "aws_key_pair" "bastion_key" {
+  key_name = "bastion"
+  public_key = file("~/.ssh/bastion-key.pub")
+}
+
+// --- APP SERVER INSTANCE
+resource "aws_instance" "app_server_instance" {
+  ami = "ami-0914bddde8faa93a0"
+  instance_type = "t3.micro"
+  count = length(var.app_subnet_ids)
+
+  subnet_id = element(var.app_subnet_ids, count.index)
+  key_name = aws_key_pair.bastion_app_server_key.key_name
+
+
+  tags = {
+    Name = "App Server ${count.index + 1}"
+  }
+}
+
+// --- APP SERVER INSTANCE KEY-PAIR
+resource "aws_key_pair" "bastion_app_server_key" {
+  key_name = "app-server-key"
+  public_key = file("~/.ssh/app-server-key.pub")
+}
+
+// --- ALB SECURITY GROUP
+resource "aws_security_group" "alb_sg" {
+  name = "alb-sg"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+// --- ALB TARGET GROUP
+resource "aws_lb_target_group" "app_server_tg" {
+  name = "app-server-tg"
+  port = 80
+  protocol = "HTTP"
+  vpc_id = var.vpc_id
+
+  health_check {
+    path = "/"
+    interval = 30
+    timeout = 5
+    healthy_threshold = 5
+    unhealthy_threshold = 2
+    matcher = 200
+  }
+}
+// --- APPLICATION LOAD BALANCER ---
+resource "aws_lb" "app_server_lb" {
+  name = "app-server-lb"
+  load_balancer_type = "application"
+  subnets = var.public_subnet_ids
+  security_groups = [aws_security_group.alb_sg.id]
+
+  enable_deletion_protection = false
+}
+
+// --- ALB LISTENER
+resource "aws_lb_listener" "app_server_listener" {
+  load_balancer_arn = aws_lb.app_server_lb.arn
+  port = 80
+  protocol = "HTTP"
+
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.app_server_tg.arn
+  }
+}
+// --- ALB REGISTER TARGETS (ALB GROUP ATTACHMENT)
+resource "aws_lb_target_group_attachment" "app_server_attachment" {
+  target_group_arn = aws_lb_target_group.app_server_tg.arn
+  count = length(aws_instance.app_server_instance)
+  target_id = aws_instance.app_server_instance[count.index].id
+  port = 80
+}
