@@ -1,3 +1,35 @@
+// --- DATABASE VARIABLES
+variable "db_identifier" {
+  type = string
+  description = "Database Identifier"
+}
+
+variable "db_engine" {
+  type = string
+  description = "Database Engine"
+}
+
+variable "db_eng_version" {
+  type = string
+  description = "Database Engine Version"
+}
+
+variable "db_inst_class" {
+  type = string
+  description = "Database Instance Class"
+}
+
+variable "db_storage_size" {
+  type = number
+  description = "Database Storage Size"
+}
+
+variable "secret_name" {
+  type = string
+  description = "Name of secret in Secrets Manager"
+}
+
+// --- NETWORKING IDs ---
 variable "vpc_id" {
   type = string
   description = "VPC ID to launch RDS instance into"
@@ -17,21 +49,8 @@ variable "database_subnet_ids" {
   description = "List of database subnet IDs"
 }
 
+// --- COMPUTE IDs
 variable "app_server_sg_id" {
   type = string
   description = "App server's security group ID"
-}
-
-// --- SECRETS MANAGER ---
-
-data "aws_secretsmanager_secret" "rds-creds" {
-  name = "rds-credentials"
-}
-
-data "aws_secretsmanager_secret_version" "rds_version" {
-  secret_id = data.aws_secretsmanager_secret.rds-creds.id
-}
-
-locals {
-  rds_creds = jsondecode(data.aws_secretsmanager_secret_version.rds_version.secret_string)
 }
