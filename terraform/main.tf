@@ -7,7 +7,6 @@ module "networking" {
   public_subnet_cidrs = [ "10.0.1.0/24", "10.0.2.0/24" ]
   app_subnet_cidrs = [ "10.0.3.0/24", "10.0.4.0/24" ]
   database_subnet_cidrs = [ "10.0.5.0/24", "10.0.6.0/24" ]
-
 }
 
 // --- COMPUTE ---
@@ -44,7 +43,11 @@ module "database" {
 
   // Compute IDs
   app_server_sg_id = module.compute.app_server_sg_id
-
 }
 
-// --- SECURITY --- 
+// --- FRONTEND --- 
+module "frontend" {
+  source = "./frontend"
+
+  
+}
