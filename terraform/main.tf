@@ -9,5 +9,17 @@ module "compute" {
   public_subnet_ids = module.networking.public_subnet_ids
   app_subnet_ids = module.networking.app_subnet_ids
   database_subnet_ids = module.networking.database_subnet_ids
+}
+
+module "database" {
+  source = "./database"
+
+  vpc_id = module.networking.vpc_id
+  availability_zones = module.networking.availability_zones
+  app_subnet_ids = module.networking.app_subnet_ids
+  
+  database_subnet_ids = module.networking.database_subnet_ids
+  
+  app_server_sg_id = module.compute.app_server_sg_id
 
 }
