@@ -20,6 +20,7 @@ resource "aws_subnet" "app_server_subnet" {
   tags = {
     Name = "App Subnet ${count.index + 1}"
   }
+
 }
 
 // --- DATABASE SUBNET (PRIVATE) ---

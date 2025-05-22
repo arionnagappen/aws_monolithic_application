@@ -5,7 +5,7 @@ resource "aws_security_group" "rds_sg" {
   vpc_id = var.vpc_id
 }
 
-// --- ALLOW TRAFFIC FROM APP SERVERS TO RDS 
+// --- ONLY ALLOW TRAFFIC FROM APP SERVERS TO RDS 
 resource "aws_security_group_rule" "allow_app_to_rds_traffic" {
   type = "ingress"
   from_port = 3306
