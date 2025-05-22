@@ -1,4 +1,6 @@
 // --- NAT GATEWAY ---
+
+# Creates an Elastic IP Address for the NAT Gateway
 resource "aws_eip" "nat_eip" {
   count = length(aws_subnet.public_subnets)
   domain = "vpc"
@@ -8,9 +10,10 @@ resource "aws_eip" "nat_eip" {
   }
 }
 
+# Creates the NAT Gateway for Private Subnets to Access the Internet
 resource "aws_nat_gateway" "nat_gw" {
   count = length(aws_subnet.public_subnets)
-  allocation_id = aws_eip.nat_eip[count.index].id
+  allocation_id = aws_eip.nat_eip[count.index].id # Attaches Elastic IP to NAT Gateway
   subnet_id = aws_subnet.public_subnets[count.index].id
   depends_on = [ aws_internet_gateway.my_igw ]
 
@@ -19,6 +22,7 @@ resource "aws_nat_gateway" "nat_gw" {
     }
 }
 
+# Sends outbound traffic to the internet 
 resource "aws_route_table" "nat_route" {
   count = length(aws_nat_gateway.nat_gw)
   vpc_id = aws_vpc.my_vpc.id
@@ -33,6 +37,7 @@ resource "aws_route_table" "nat_route" {
   }
 }
 
+# Outbound Internet traffic from private subnets will pass through the NAT Gateway
 resource "aws_route_table_association" "nat_assoc" {
   count = length(var.app_subnet_cidrs)
   subnet_id = aws_subnet.app_server_subnet[count.index].id
