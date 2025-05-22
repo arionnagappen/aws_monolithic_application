@@ -51,3 +51,8 @@ module "frontend" {
 
   
 }
+
+// --- SECURITY ---
+module "security_iam" {
+  source = "./security"
+}
