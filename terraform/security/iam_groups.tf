@@ -24,6 +24,16 @@ resource "aws_iam_group" "finance_group" {
 }
 
 resource "aws_iam_group_policy_attachment" "name" {
-  group = aws_iam_group.finance_group.name
+  group      = aws_iam_group.finance_group.name
   policy_arn = aws_iam_policy.finance_policy.arn
+}
+
+// --- ANALYSTS ---
+resource "aws_iam_group" "analyst_group" {
+  name = "AnalystGroup"
+}
+
+resource "aws_iam_group_policy_attachment" "analyst_policy_attach" {
+  group      = aws_iam_group.analyst_group.name
+  policy_arn = aws_iam_policy.analyst_policy.arn
 }
