@@ -37,10 +37,3 @@ resource "aws_lb_listener" "app_server_listener" {
     target_group_arn = aws_lb_target_group.app_server_tg.arn # Forward the traffic to the target group
   }
 }
-// --- ALB REGISTER TARGETS (ALB GROUP ATTACHMENT)
-resource "aws_lb_target_group_attachment" "app_server_attachment" {
-  target_group_arn = aws_lb_target_group.app_server_tg.arn
-  count = length(aws_instance.app_server_instance)
-  target_id = aws_instance.app_server_instance[count.index].id # Instances ALB will forward traffic to
-  port = 80
-}
