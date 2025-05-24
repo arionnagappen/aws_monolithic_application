@@ -1,5 +1,5 @@
 output "app_server_ids" {
-  value = [for inst in aws_instance.app_server_instance : inst.id]
+  value = aws_autoscaling_group.app_server_asg.id
 }
 
 output "app_server_sg_id" {
