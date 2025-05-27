@@ -22,6 +22,9 @@ module "compute" {
   public_subnet_ids   = module.networking.public_subnet_ids
   app_subnet_ids      = module.networking.app_subnet_ids
   database_subnet_ids = module.networking.database_subnet_ids
+
+  // App Server IAM Profile Name
+    app_server_iam_profile_name = module.security.app_server_iam_profile_name
 }
 
 // --- DATABASE ---

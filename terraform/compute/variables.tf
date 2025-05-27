@@ -32,3 +32,8 @@ variable "database_subnet_ids" {
   type = list(string)
   description = "List of database subnet IDs"
 }
+
+// SECURITY MODULE
+variable "app_server_iam_profile_name" {
+  type = string
+}
