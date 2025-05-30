@@ -23,8 +23,8 @@ module "compute" {
   app_subnet_ids      = module.networking.app_subnet_ids
   database_subnet_ids = module.networking.database_subnet_ids
 
-  // App Server IAM Profile Name
-    app_server_iam_profile_name = module.security.app_server_iam_profile_name
+  // App Server Instance Profile Name
+  app_server_instance_profile_name = module.security.app_server_instance_profile_name
 }
 
 // --- DATABASE ---
@@ -55,7 +55,14 @@ module "frontend" {
 
 }
 
+// --- STORAGE ---
+module "storage" {
+  source = "./storage"
+}
+
 // --- SECURITY ---
-module "security_iam" {
+module "security" {
   source = "./security"
+
+  user_data_arn = module.storage.user_data_arn
 }

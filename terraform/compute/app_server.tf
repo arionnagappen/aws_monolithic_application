@@ -6,11 +6,7 @@ resource "aws_launch_template" "app_server_template" {
   key_name               = aws_key_pair.bastion_app_server_key.key_name
   vpc_security_group_ids = [aws_security_group.app_server_sg.id]
   iam_instance_profile {
-    name = var.app_server_iam_profile_name
-  }
-
-  monitoring {
-    enabled = true
+    name = var.app_server_instance_profile_name
   }
 
   tag_specifications {
@@ -20,20 +16,6 @@ resource "aws_launch_template" "app_server_template" {
       Name = "App Server"
     }
   }
-
-  # Install & Start CloudWatch 
-  user_data = base64encode(<<-EOF
-  #!/bin/bash
-  yum update -y 
-  yum install -y amazon-cloudwatch-agent aws-cli
-
-  /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
-    -a fetch-config \
-    -m ec2 \
-    -c ssm:/AmazonCloudWatch-AppServerConfig \
-    -s
-  EOF
-  )
 }
 
 // --- APP SERVER AUTO-SCALING GROUP ---
