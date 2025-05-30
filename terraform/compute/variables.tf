@@ -34,6 +34,6 @@ variable "database_subnet_ids" {
 }
 
 // SECURITY MODULE
-variable "app_server_iam_profile_name" {
+variable "app_server_instance_profile_name" {
   type = string
 }

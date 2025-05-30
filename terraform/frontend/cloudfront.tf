@@ -1,5 +1,5 @@
 // --- CLOUDFRONT ---
-# Origin Access Identity
+# Origin Access Identity - Only CloudFront can access the S3 bucket
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   comment = "OAI for Frontend Site"
 }
