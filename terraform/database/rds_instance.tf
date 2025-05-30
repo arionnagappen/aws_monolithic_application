@@ -8,15 +8,6 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
   }
 }
 
-resource "aws_kms_key" "my_kms_key" {
-  description = "KMS key for RDS Encryption"
-  deletion_window_in_days = 7
-
-  tags = {
-    Name = "MyKMSKey"
-  }
-}
-
 // --- RDS INSTANCE ---
 resource "aws_db_instance" "my_db" {
   identifier = var.db_identifier
@@ -34,5 +25,5 @@ resource "aws_db_instance" "my_db" {
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   
   storage_encrypted = true
-  kms_key_id = aws_kms_key.my_kms_key.arn
+  kms_key_id = var.kms_key_id
 }

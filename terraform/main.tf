@@ -46,18 +46,21 @@ module "database" {
 
   // Compute IDs
   app_server_sg_id = module.compute.app_server_sg_id
+
+  // KMS KEY
+    kms_key_id = module.security.kms_key_id
 }
 
 // --- FRONTEND --- 
 module "frontend" {
   source = "./frontend"
-
-
 }
 
 // --- STORAGE ---
 module "storage" {
   source = "./storage"
+
+  kms_key_arn = module.security.kms_key_arn
 }
 
 // --- SECURITY ---

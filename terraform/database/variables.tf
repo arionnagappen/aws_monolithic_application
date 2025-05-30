@@ -54,3 +54,8 @@ variable "app_server_sg_id" {
   type = string
   description = "App server's security group ID"
 }
+
+// SECURITY
+variable "kms_key_id" {
+  type = string
+}
