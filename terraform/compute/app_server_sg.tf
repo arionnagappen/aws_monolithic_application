@@ -17,6 +17,4 @@ resource "aws_security_group" "app_server_sg" {
   protocol    = "-1"
   cidr_blocks = ["0.0.0.0/0"]
   }
-
-
 }
