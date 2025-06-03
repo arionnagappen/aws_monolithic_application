@@ -6,10 +6,12 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "PublicReadGetObject"
-        Effect = "Allow"
-        Principal = "*"
-        Action = "s3:GetObject"
+        Sid = "PublicReadGetObject",
+        Effect = "Allow",
+        Principal = {
+          AWS = aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn
+        }
+        Action = "s3:GetObject",
         Resource = "${aws_s3_bucket.frontend_bucket.arn}/*"
       }
     ]
