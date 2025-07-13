@@ -1,13 +1,3 @@
-// --- SUBNET GROUP FOR RDS
-resource "aws_db_subnet_group" "rds_subnet_group" {
-  name = "rds-private-subnet-group"
-  subnet_ids = var.database_subnet_ids
-
-  tags = {
-    Name = "RDS subnet group"
-  }
-}
-
 // --- RDS INSTANCE ---
 resource "aws_db_instance" "my_db" {
   identifier = var.db_identifier

@@ -1,4 +1,15 @@
-// --- DATABASE VARIABLES
+// --- DATABASE SUBNET GROUP ---
+variable "db_subnet_group_name" {
+  type = string
+  description = "Database subnet group name"
+}
+
+variable "db_subnet_group_tag" {
+  type = string
+  description = "Database subnet group tag"
+}
+
+// --- DATABASE INSTANCE ---
 variable "db_identifier" {
   type = string
   description = "Database Identifier"
@@ -29,7 +40,7 @@ variable "secret_name" {
   description = "Name of secret in Secrets Manager"
 }
 
-// --- NETWORKING IDs ---
+// --- FROM NETWORK ---
 variable "vpc_id" {
   type = string
   description = "VPC ID to launch RDS instance into"
