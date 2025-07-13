@@ -63,6 +63,11 @@ module "compute" {
 module "database" {
   source = "./modules/database"
 
+  // Database Subnet Group
+  db_subnet_group_name = "rds-private-subnet-group"
+  db_subnet_group_tag = "RDS subnet group"
+  
+  // Database Instance
   db_identifier   = "my-app-db"
   db_engine       = "mysql"
   db_eng_version  = "8.0.41"
