@@ -108,6 +108,4 @@ module "storage" {
 // --- SECURITY ---
 module "security" {
   source = "./modules/security"
-
-  user_data_arn = module.storage.user_data_arn
 }
