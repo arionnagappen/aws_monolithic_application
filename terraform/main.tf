@@ -1,5 +1,5 @@
-// --- NETWORKING ---
-module "networking" {
+// --- network ---
+module "network" {
   source = "./modules/network"
 
   vpc_cidr              = "10.0.0.0/16"
@@ -48,12 +48,12 @@ module "compute" {
   bastion_inst_type = "t3.micro"
   bastion_tag = "BastionHost"
 
-  // Import Networking IDs
-  vpc_id              = module.networking.vpc_id
-  availability_zones  = module.networking.availability_zones
-  public_subnet_ids   = module.networking.public_subnet_ids
-  app_subnet_ids      = module.networking.app_subnet_ids
-  database_subnet_ids = module.networking.database_subnet_ids
+  // Import network IDs
+  vpc_id              = module.network.vpc_id
+  availability_zones  = module.network.availability_zones
+  public_subnet_ids   = module.network.public_subnet_ids
+  app_subnet_ids      = module.network.app_subnet_ids
+  database_subnet_ids = module.network.database_subnet_ids
 
   // Import App Server Instance Profile Name
   app_server_instance_profile_name = module.security.app_server_instance_profile_name
@@ -70,11 +70,11 @@ module "database" {
   db_storage_size = 10
   secret_name     = "rds-credentials"
 
-  // Networking IDs
-  vpc_id              = module.networking.vpc_id
-  availability_zones  = module.networking.availability_zones
-  app_subnet_ids      = module.networking.app_subnet_ids
-  database_subnet_ids = module.networking.database_subnet_ids
+  // network IDs
+  vpc_id              = module.network.vpc_id
+  availability_zones  = module.network.availability_zones
+  app_subnet_ids      = module.network.app_subnet_ids
+  database_subnet_ids = module.network.database_subnet_ids
 
   // Compute IDs
   app_server_sg_id = module.compute.app_server_sg_id
