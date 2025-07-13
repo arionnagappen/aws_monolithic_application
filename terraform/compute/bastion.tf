@@ -1,13 +1,13 @@
 // ---BASTION HOST
 resource "aws_instance" "bastion_host" {
-  ami = var.inst_ami
-  instance_type = var.inst_type
+  ami = var.bastion_inst_ami
+  instance_type = var.bastion_inst_type
   subnet_id = element(var.public_subnet_ids, 0)
   key_name = aws_key_pair.bastion_key.key_name
   security_groups = [aws_security_group.bastion_sg.id]
 
   tags = {
-    Name = "Bastion Host"
+    Name = var.bastion_tag
   }
 }
 
