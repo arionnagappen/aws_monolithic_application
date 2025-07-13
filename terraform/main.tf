@@ -16,7 +16,7 @@ module "networking" {
 
 // --- COMPUTE ---
 module "compute" {
-  source = "./compute"
+  source = "./modules/compute"
 
   // Launch Template //
   name_prefix = "App Server-"
