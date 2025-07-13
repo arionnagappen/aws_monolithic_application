@@ -1,24 +1,24 @@
 // --- ALB TARGET GROUP
 resource "aws_lb_target_group" "app_server_tg" {
-  name = "app-server-tg"
+  name = var.alb_tg_name
   port = 80     # Forwards traffic to port 80
-  protocol = "HTTP"
+  protocol = var.alb_protocol
   vpc_id = var.vpc_id
 
   health_check {
     path = "/"
-    interval = 30
-    timeout = 5
-    healthy_threshold = 5
-    unhealthy_threshold = 2
-    matcher = 200
+    interval = var.alb_health_interval
+    timeout = var.alb_health_timeout
+    healthy_threshold = var.alb_healthy_threshold
+    unhealthy_threshold = var.alb_unhealthy_threshold
+    matcher = var.alb_health_matcher
   }
 }
 
 
 // --- APPLICATION LOAD BALANCER ---
 resource "aws_lb" "app_server_lb" {
-  name = "app-server-lb"
+  name = var.alb_name
   load_balancer_type = "application"
   subnets = var.public_subnet_ids
   security_groups = [aws_security_group.alb_sg.id]
