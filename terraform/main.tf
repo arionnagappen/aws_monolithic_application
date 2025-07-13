@@ -91,6 +91,10 @@ module "database" {
 // --- FRONTEND --- 
 module "frontend" {
   source = "./modules/frontend"
+
+  // Frontend Bucket
+  frontend_bucket_name = "s3-frontend-bucket-an"
+  bucket_object_ownership = "BucketOwnerPreferred" 
 }
 
 // --- STORAGE ---
