@@ -6,7 +6,7 @@ resource "aws_subnet" "public_subnets" {
   availability_zone = element(var.availability_zones, count.index)
 
     tags = {
-    Name = "Public Subnet ${count.index + 1}"
+    Name = "${var.pub_subnet_tag}${count.index + 1}"
   }
 }
 
@@ -18,7 +18,7 @@ resource "aws_subnet" "app_server_subnet" {
   availability_zone = element(var.availability_zones, count.index)
 
   tags = {
-    Name = "App Subnet ${count.index + 1}"
+    Name = "${var.app_subnet_tag}${count.index + 1}"
   }
 
 }
@@ -31,6 +31,6 @@ resource "aws_subnet" "database_subnet" {
   availability_zone = element(var.availability_zones, count.index)
 
     tags = {
-    Name = "Database Subnet ${count.index + 1}"
+    Name = "${var.database_subnet_tag}${count.index + 1}"
   }
 }
