@@ -94,13 +94,14 @@ module "frontend" {
 
   // Frontend Bucket
   frontend_bucket_name = "s3-frontend-bucket-an"
-  bucket_object_ownership = "BucketOwnerPreferred" 
+  bucket_object_ownership = "BucketOwnerPreferred"
 }
 
-// --- STORAGE ---
+// --- USER DATA STORAGE ---
 module "storage" {
-  source = "./modules/storage"
+  source = "./modules/user-data-storage"
 
+  user_data_bucket_name = "s3-user-data-bucket"
   kms_key_arn = module.security.kms_key_arn
 }
 
