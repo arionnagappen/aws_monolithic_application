@@ -1,4 +1,5 @@
 // --- LAUNCH TEMPLATE ---
+
 variable "inst_ami" {
   type = string
   description = "AMI of the instance"
@@ -136,6 +137,7 @@ variable "database_subnet_ids" {
   type = list(string)
   description = "List of database subnet IDs"
 }
+
 
 // --- FROM SECURITY MODULE ---
 variable "app_server_instance_profile_name" {
