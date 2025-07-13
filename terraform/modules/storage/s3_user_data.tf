@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "user_data_bucket" {
   bucket = "s3-user-data-bucket"
-
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "user_data_encryption" {
