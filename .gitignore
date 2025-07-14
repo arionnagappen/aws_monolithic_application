@@ -1,5 +1,5 @@
 # Ignore the .terraform directory (contains provider binaries, local backend info)
-.terraform/
+terraform/environments/dev/.terraform 
 
 # Ignore Terraform state files (may contain sensitive data)
 *.tfstate

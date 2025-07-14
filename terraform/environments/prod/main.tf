@@ -1,6 +1,6 @@
 // --- network ---
 module "network" {
-  source = "./modules/network"
+  source = "../../modules/network"
 
   vpc_cidr              = "10.0.0.0/16"
   availability_zones    = ["af-south-1a", "af-south-1b"]
@@ -16,7 +16,7 @@ module "network" {
 
 // --- COMPUTE ---
 module "compute" {
-  source = "./modules/compute"
+  source = "../../modules/compute"
 
   // Launch Template //
   name_prefix = "AppServer-"
@@ -61,7 +61,7 @@ module "compute" {
 
 // --- DATABASE ---
 module "database" {
-  source = "./modules/database"
+  source = "../../modules/database"
 
   // Secrets Manager
   rds_username = module.security.rds_creds.username
@@ -93,7 +93,7 @@ module "database" {
 
 // --- FRONTEND --- 
 module "frontend" {
-  source = "./modules/frontend"
+  source = "../../modules/frontend"
 
   // Frontend Bucket
   frontend_bucket_name = "s3-frontend-bucket-an"
@@ -102,7 +102,7 @@ module "frontend" {
 
 // --- USER DATA STORAGE ---
 module "storage" {
-  source = "./modules/user-data-storage"
+  source = "../../modules/user-data-storage"
 
   user_data_bucket_name = "s3-user-data-bucket"
   kms_key_arn = module.security.kms_key_arn
@@ -110,7 +110,7 @@ module "storage" {
 
 // --- SECURITY ---
 module "security" {
-  source = "./modules/security"
+  source = "../../modules/security"
 
   // From Storage //
   user_data_arn = module.storage.user_data_arn
