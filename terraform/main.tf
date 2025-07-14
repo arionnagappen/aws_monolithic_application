@@ -19,7 +19,7 @@ module "compute" {
   source = "./modules/compute"
 
   // Launch Template //
-  name_prefix = "App Server-"
+  name_prefix = "AppServer-"
   inst_ami  = "ami-0914bddde8faa93a0"
   inst_type = "t3.micro"
   launch_temp_tag = "MyLaunchTemp"
@@ -56,12 +56,16 @@ module "compute" {
   database_subnet_ids = module.network.database_subnet_ids
 
   // Import App Server Instance Profile Name
-  app_server_instance_profile_name = module.security.app_server_instance_profile_name
+  app_server_instance_profile_name = module.security.instance_profile_name
 }
 
 // --- DATABASE ---
 module "database" {
   source = "./modules/database"
+
+  // Secrets Manager
+  rds_username = module.security.rds_creds.username
+  rds_password = module.security.rds_creds.password
 
   // Database Subnet Group
   db_subnet_group_name = "rds-private-subnet-group"
@@ -73,9 +77,8 @@ module "database" {
   db_eng_version  = "8.0.41"
   db_inst_class   = "db.t3.micro"
   db_storage_size = 10
-  secret_name     = "rds-credentials"
 
-  // network IDs
+  // Network IDs
   vpc_id              = module.network.vpc_id
   availability_zones  = module.network.availability_zones
   app_subnet_ids      = module.network.app_subnet_ids
@@ -85,7 +88,7 @@ module "database" {
   app_server_sg_id = module.compute.app_server_sg_id
 
   // KMS KEY
-  kms_key_id = module.security.kms_key_id
+  kms_key_id = module.security.my_kms_key_id
 }
 
 // --- FRONTEND --- 
@@ -108,4 +111,11 @@ module "storage" {
 // --- SECURITY ---
 module "security" {
   source = "./modules/security"
+
+  // From Storage //
+  user_data_arn = module.storage.user_data_arn
+
+  // Secrets Manager //
+  rds_secrets_name = "rds-credentials"
+
 }

@@ -1,6 +1,6 @@
 // --- SECRETS MANAGER ---
 data "aws_secretsmanager_secret" "rds-creds" {
-  name = var.secret_name
+  name = var.rds_secret_name
 }
 
 data "aws_secretsmanager_secret_version" "rds_version" {

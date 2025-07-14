@@ -35,9 +35,13 @@ variable "db_storage_size" {
   description = "Database Storage Size"
 }
 
-variable "secret_name" {
+// --- SECRETS ---
+variable "rds_username" {
   type = string
-  description = "Name of secret in Secrets Manager"
+}
+
+variable "rds_password" {
+  type = string
 }
 
 // --- FROM NETWORK ---
