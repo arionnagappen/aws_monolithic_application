@@ -88,7 +88,7 @@ module "database" {
   app_server_sg_id = module.compute.app_server_sg_id
 
   // KMS KEY
-  kms_key_id = module.security.my_kms_key_id
+  kms_key_id = module.security.kms_key_arn
 }
 
 // --- FRONTEND --- 
