@@ -4,8 +4,8 @@ resource "aws_db_instance" "my_db" {
   engine = var.db_engine
   engine_version = var.db_eng_version
   instance_class = var.db_inst_class
-  username = local.rds_creds.username
-  password = local.rds_creds.password
+  username = var.rds_username
+  password = var.rds_password
   allocated_storage = var.db_storage_size
   skip_final_snapshot = true
   publicly_accessible = false

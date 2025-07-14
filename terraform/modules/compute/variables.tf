@@ -1,5 +1,4 @@
 // --- LAUNCH TEMPLATE ---
-
 variable "inst_ami" {
   type = string
   description = "AMI of the instance"
@@ -93,7 +92,7 @@ variable "alb_health_matcher" {
 }
 
 variable "alb_name" {
-  type = number
+  type = string
   description = "ALB name"
 }
 
