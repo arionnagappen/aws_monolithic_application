@@ -123,5 +123,18 @@ module "security" {
 // --- MONITORING ---
 module "monitoring" {
   source = "../../modules/monitoring"
+
+  // VPC ID
   vpc_id = module.network.vpc_id
+
+  // App Server ID & Metrics
+  app_server_ids = module.compute.app_server_ids
+  cpu_threshold = 70
+
+  // SNS
+  alert_email = "arionnagappen@gmail.com"
+
+  // RDS ID & Metrics
+  db_rds_id = module.database.db_rds_id
+  rds_storage_threshold = 5368709120
 }
