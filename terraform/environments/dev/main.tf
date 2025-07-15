@@ -28,7 +28,7 @@ module "compute" {
   asg_name = "App Server ASG"
   maximum_size = 3
   minimum_size = 1
-  desired_cap = 2
+  desired_cap = 1
   asg_tag = "AppServer"
   health_chk_type = "ELB"
   health_chk_grace_period = 300
@@ -118,4 +118,10 @@ module "security" {
   // Secrets Manager //
   rds_secrets_name = "rds-credentials"
 
+}
+
+// --- MONITORING ---
+module "monitoring" {
+  source = "../../modules/monitoring"
+  vpc_id = module.network.vpc_id
 }
