@@ -28,7 +28,7 @@ module "compute" {
   asg_name = "App Server ASG"
   maximum_size = 3
   minimum_size = 1
-  desired_cap = 2
+  desired_cap = 1
   asg_tag = "AppServer"
   health_chk_type = "ELB"
   health_chk_grace_period = 300
@@ -118,4 +118,23 @@ module "security" {
   // Secrets Manager //
   rds_secrets_name = "rds-credentials"
 
+}
+
+// --- MONITORING ---
+module "monitoring" {
+  source = "../../modules/monitoring"
+
+  // VPC ID
+  vpc_id = module.network.vpc_id
+
+  // App Server ID & Metrics
+  app_server_ids = module.compute.app_server_ids
+  cpu_threshold = 70
+
+  // SNS
+  alert_email = "arionnagappen@gmail.com"
+
+  // RDS ID & Metrics
+  db_rds_id = module.database.db_rds_id
+  rds_storage_threshold = 5368709120
 }
