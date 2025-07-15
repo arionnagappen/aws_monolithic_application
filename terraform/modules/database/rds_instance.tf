@@ -9,7 +9,7 @@ resource "aws_db_instance" "my_db" {
   allocated_storage = var.db_storage_size
   skip_final_snapshot = true
   publicly_accessible = false
-  multi_az = true
+  multi_az = false
 
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
