@@ -19,6 +19,6 @@ output "database_subnet_ids" {
 }
 
 output "nat_ids" {
-  value = [for nat in aws_nat_gateway.nat_gw : nat.id]
+  value = aws_nat_gateway.nat_gw.id
 }
 

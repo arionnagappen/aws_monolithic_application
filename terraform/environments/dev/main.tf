@@ -8,9 +8,9 @@ module "network" {
   app_subnet_cidrs      = ["10.0.3.0/24", "10.0.4.0/24"]
   database_subnet_cidrs = ["10.0.5.0/24", "10.0.6.0/24"]
 
-  vpc_tag = "MyVPC"
-  pub_subnet_tag = "PublicSubnet"
-  app_subnet_tag = "AppSubnet"
+  vpc_tag             = "MyVPC"
+  pub_subnet_tag      = "PublicSubnet"
+  app_subnet_tag      = "AppSubnet"
   database_subnet_tag = "DatabaseSubnet"
 }
 
@@ -19,34 +19,34 @@ module "compute" {
   source = "../../modules/compute"
 
   // Launch Template //
-  name_prefix = "AppServer-"
-  inst_ami  = "ami-0914bddde8faa93a0"
-  inst_type = "t3.micro"
+  name_prefix     = "AppServer-"
+  inst_ami        = "ami-0914bddde8faa93a0"
+  inst_type       = "t3.micro"
   launch_temp_tag = "MyLaunchTemp"
 
   // Auto Scaling Group //
-  asg_name = "App Server ASG"
-  maximum_size = 3
-  minimum_size = 1
-  desired_cap = 1
-  asg_tag = "AppServer"
-  health_chk_type = "ELB"
-  health_chk_grace_period = 300
+  asg_name                = "AppServerASG"
+  maximum_size            = 3
+  minimum_size            = 1
+  desired_cap             = 2
+  asg_tag                 = "AppServer"
+  health_chk_type         = "ELB" // ALB decides if an EC2 instance is healthly
+  health_chk_grace_period =  300
 
   // Application Load Balancer //
-  alb_tg_name = "ApplicationTargetGroup"
-  alb_protocol = "HTTP"
-  alb_health_interval = 30
-  alb_health_timeout = 5
-  alb_healthy_threshold = 5
-  alb_unhealthy_threshold = 2
-  alb_health_matcher = 200
-  alb_name = "ApplicationLoadBalancer"
+  alb_tg_name             = "ApplicationTargetGroup"
+  alb_protocol            = "HTTP"
+  alb_health_interval     = 30
+  alb_health_timeout      = 5
+  alb_healthy_threshold   = 2
+  alb_unhealthy_threshold = 5
+  alb_health_matcher      = 200
+  alb_name                = "ApplicationLoadBalancer"
 
   // Bastion Host //
-  bastion_inst_ami = "ami-0914bddde8faa93a0"
+  bastion_inst_ami  = "ami-0914bddde8faa93a0"
   bastion_inst_type = "t3.micro"
-  bastion_tag = "BastionHost"
+  bastion_tag       = "BastionHost"
 
   // Import network IDs
   vpc_id              = module.network.vpc_id
@@ -69,8 +69,8 @@ module "database" {
 
   // Database Subnet Group
   db_subnet_group_name = "rds-private-subnet-group"
-  db_subnet_group_tag = "RDS subnet group"
-  
+  db_subnet_group_tag  = "RDS subnet group"
+
   // Database Instance
   db_identifier   = "my-app-db"
   db_engine       = "mysql"
@@ -96,7 +96,7 @@ module "frontend" {
   source = "../../modules/frontend"
 
   // Frontend Bucket
-  frontend_bucket_name = "s3-frontend-bucket-an"
+  frontend_bucket_name    = "s3-frontend-bucket-an"
   bucket_object_ownership = "BucketOwnerPreferred"
 }
 
@@ -104,8 +104,8 @@ module "frontend" {
 module "storage" {
   source = "../../modules/user-data-storage"
 
-  user_data_bucket_name = "s3-user-data-bucket"
-  kms_key_arn = module.security.kms_key_arn
+  user_data_bucket_name = "s3-user-data-bucket-20250715"
+  kms_key_arn           = module.security.kms_key_arn
 }
 
 // --- SECURITY ---
@@ -129,12 +129,16 @@ module "monitoring" {
 
   // App Server ID & Metrics
   app_server_ids = module.compute.app_server_ids
-  cpu_threshold = 70
+  cpu_threshold  = 70
 
   // SNS
   alert_email = "arionnagappen@gmail.com"
 
   // RDS ID & Metrics
-  db_rds_id = module.database.db_rds_id
-  rds_storage_threshold = 5368709120
+  db_rds_id             = module.database.db_rds_id
+  rds_storage_threshold = 8500000000
+
+  // ASG
+  asg_name = module.compute.asg_name
+  asg_policy_arn = module.compute.asg_policy_arn
 }

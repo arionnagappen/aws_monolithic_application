@@ -9,6 +9,12 @@ resource "aws_launch_template" "app_server_template" {
     name = var.app_server_instance_profile_name
   }
 
+  monitoring {
+    enabled = true
+  }
+
+  user_data = base64encode(file("${path.module}/run_nginx.sh"))
+
   tag_specifications {
     resource_type = "instance"
 
