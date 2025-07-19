@@ -27,3 +27,11 @@ variable "rds_storage_threshold" {
   type = number
   description = "Database storage threshold"
 }
+
+variable "asg_name" {
+  type = string
+}
+
+variable "asg_policy_arn" {
+  type = string
+}

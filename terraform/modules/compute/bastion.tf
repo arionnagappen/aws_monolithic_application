@@ -5,6 +5,7 @@ resource "aws_instance" "bastion_host" {
   subnet_id = element(var.public_subnet_ids, 0)
   key_name = aws_key_pair.bastion_key.key_name
   security_groups = [aws_security_group.bastion_sg.id]
+  associate_public_ip_address = true
 
   tags = {
     Name = var.bastion_tag

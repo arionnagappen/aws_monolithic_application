@@ -15,11 +15,19 @@ variable "sns_topic_arn" {
 }
 
 variable "db_rds_id" {
-  type = number
+  type = string
   description = "Database ID"
 }
 variable "rds_storage_threshold" {
   type = number
   description = "Database Storage Threshold"
   default = 5368709120
+}
+
+variable "asg_name" {
+  type = string
+}
+
+variable "asg_policy_arn" {
+  type = string
 }

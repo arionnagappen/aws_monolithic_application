@@ -12,7 +12,7 @@ module "app_server_alarms" {
   source = "./alarms"
 
   // SNS
-  sns_topic_arn = module.sns.ec2_alerts.arn
+  sns_topic_arn = module.sns.sns_topic_arn
 
   // App Servers
   app_server_ids = var.app_server_ids
@@ -21,4 +21,8 @@ module "app_server_alarms" {
   // Database Instances
   db_rds_id = var.db_rds_id
   rds_storage_threshold = var.rds_storage_threshold
+
+  // ASG Name
+  asg_name = var.asg_name
+  asg_policy_arn = var.asg_policy_arn
 }
